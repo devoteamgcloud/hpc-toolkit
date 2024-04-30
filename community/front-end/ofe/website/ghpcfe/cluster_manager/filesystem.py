@@ -34,7 +34,21 @@ def write_filestore_yaml(fs: GCPFilestoreFilesystem, target_dir: Path) -> None:
     project_id = json.loads(fs.cloud_credential.detail)["project_id"]
     # Get first (only) export
     export_name = fs.exports.first().export_name
+    private_service_access = False
 
+    if fs.vpc.cloud_id.startswith("https://www.googleapis.com/compute/v1/"):
+        network_id = fs.vpc.cloud_id.replace("https://www.googleapis.com/compute/v1/","")
+        network_project = network_id.split("/")[-4]
+        if network_project != project_id:
+            private_service_access = True
+    else:
+        network_id = f"projects/{project_id}/global/networks/{fs.vpc.cloud_id}"
+
+    if private_service_access:
+        connect_mode = "PRIVATE_SERVICE_ACCESS"
+    else:
+        connect_mode = "DIRECT_PEERING"
+       
     with yaml_file.open("w") as f:
         f.write(
             f"""
@@ -56,7 +70,8 @@ deployment_groups:
     id: {fs.name}
     settings:
       filestore_share_name: {export_name[1:]}
-      network_id: projects/{project_id}/global/networks/{fs.vpc.cloud_id}
+      network_id: {network_id}
+      connect_mode: {connect_mode}
       zone: {fs.cloud_zone}
       size_gb: {fs.capacity}
       filestore_tier: {fs.get_performance_tier_display()}

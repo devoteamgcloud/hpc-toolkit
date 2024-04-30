@@ -214,6 +214,39 @@ class ClusterInfo:
 
         return ("\n\n".join(yaml), refs)
 
+    def _prepare_network(self):
+        yaml = []
+        refs = []
+        if self.cluster.subnet.vpc.cloud_id.startswith("https://www.googleapis.com/compute/v1/projects"):
+            split_helper = self.cluster.subnet.vpc.cloud_id.split("/")
+            host_project_id = split_helper[len(split_helper)-4]
+            network_name = split_helper[len(split_helper)-1]
+            yaml.append(
+                f"""
+- group: primary
+  modules:
+  - source: community/modules/network/pre-existing-shared-vpc
+    kind: terraform
+    settings:
+      subnetwork_self_link: {self.cluster.subnet.cloud_id}
+    id: hpc_network
+""")
+        else:
+            yaml.append(
+                f"""
+- group: primary
+  modules:
+  - source: modules/network/pre-existing-vpc
+    kind: terraform
+    settings:
+       network_name: {self.cluster.subnet.vpc.cloud_id}
+       subnetwork_name: {self.cluster.subnet.cloud_id}
+    id: hpc_network
+"""
+            )
+        return ("\n\n".join(yaml),refs)
+
+
     def _prepare_ghpc_partitions(self, part_uses):
         yaml = []
         refs = []
@@ -300,6 +333,10 @@ class ClusterInfo:
                 "project_id"
             ]
             (
+                network_yaml,
+                network_references,
+            ) = self._prepare_network()
+            (
                 filesystems_yaml,
                 filesystems_references,
             ) = self._prepare_ghpc_filesystems()
@@ -374,14 +411,7 @@ vars:
     created_by: {SITE_NAME}
 
 deployment_groups:
-- group: primary
-  modules:
-  - source: modules/network/pre-existing-vpc
-    kind: terraform
-    settings:
-      network_name: {self.cluster.subnet.vpc.cloud_id}
-      subnetwork_name: {self.cluster.subnet.cloud_id}
-    id: hpc_network
+{network_yaml}
 
 {filesystems_yaml}
 
