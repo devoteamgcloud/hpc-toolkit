@@ -255,9 +255,11 @@ def get_region_zone_info(cloud_provider, credentials):
 def _get_gcp_subnets(credentials):
     (project, client) = _get_gcp_client(credentials)
 
+    entries = []
     req = client.subnetworks().listUsable(project=project)
     results = req.execute()
-    entries = results["items"]
+    if "items" in results:
+        entries = results["items"]
     subnets = []
     req = client.projects().getXpnHost(project=project)
     results = req.execute()
@@ -266,8 +268,9 @@ def _get_gcp_subnets(credentials):
         logger.debug("Found host project %s looking for additional subnets.", host_project)
         req = client.subnetworks().listUsable(project=host_project)
         results = req.execute()
-        entries_from_host_project = results["items"]
-        entries = entries + entries_from_host_project
+        if "items" in results:
+            entries_from_host_project = results["items"]
+            entries = entries + entries_from_host_project
 
     for entry in entries:
         # subnet in the form of https://www.googleapis.com/compute/v1/projects/<project>/regions/<region>/subnetworks/<name>
