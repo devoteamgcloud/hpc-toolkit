@@ -56,3 +56,4 @@ fi
 echo "Mounting --target ${LOCAL_MOUNT} from fstab"
 mkdir -p "${LOCAL_MOUNT}"
 mount --target "${LOCAL_MOUNT}"
+chmod a+x "${LOCAL_MOUNT}"
