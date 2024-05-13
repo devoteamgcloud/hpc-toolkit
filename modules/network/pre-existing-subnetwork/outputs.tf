@@ -14,20 +14,20 @@
  * limitations under the License.
 */
 
-output "network_name" {
-  description = "Name of the existing VPC network"
-  value       = reverse(split("/",data.google_compute_subnetwork.primary_subnetwork.network))[0]
-}
+# output "network_name" {
+#   description = "Name of the existing VPC network"
+#   value       = reverse(split("/",data.google_compute_subnetwork.primary_subnetwork.network))[0]
+# }
 
-output "network_id" {
-  description = "ID of the existing VPC network"
-  value       = join("/",slice(split("/",data.google_compute_subnetwork.primary_subnetwork.network),5,10))
-}
+# output "network_id" {
+#   description = "ID of the existing VPC network"
+#   value       = join("/",slice(split("/",data.google_compute_subnetwork.primary_subnetwork.network),5,10))
+# }
 
-output "network_self_link" {
-  description = "Self link of the existing VPC network"
-  value       = data.google_compute_subnetwork.primary_subnetwork.network
-}
+# output "network_self_link" {
+#   description = "Self link of the existing VPC network"
+#   value       = data.google_compute_subnetwork.primary_subnetwork.network
+# }
 
 
 output "subnetwork" {

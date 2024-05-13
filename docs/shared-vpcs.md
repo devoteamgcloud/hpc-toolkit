@@ -4,7 +4,7 @@ The HPC toolkit supports the use of shared-vpcs, using a community plugin.
 
 This module is especially intended for use with the HPC Toolkit Frontend.
 
-The module is located in  `community/modules/pre-existing-shared-vpc`.
+The module is located in  `modules/network/pre-existing-subnetwork`.
 
 The extension is build to support subnet level permissions.
 
@@ -12,7 +12,7 @@ The subnet is referenced directly using self_link:
 ```
 - group: primary
   modules:
-  - source: community/modules/network/pre-existing-shared-vpc
+  - source: modules/network/pre-existing-subnetwork
     kind: terraform
     settings:
       subnetwork_self_link: https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}

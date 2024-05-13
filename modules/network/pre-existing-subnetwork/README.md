@@ -20,10 +20,11 @@ VM will be created.
 
 ```yaml
 - id: network1
-  source: community/modules/network/pre-existing-shared-vpc
+  source: modules/network/pre-existing-subnetwork
   settings:
-    network_name: name-of-network
-    host_project_id: name-of-host-project
+    subnetwork_name: name-of-subnetwork
+    region: name-of-region
+    host_project: name-of-host-project
     subnetwork_self_link: https://www.googleapis.com/compute/v1/projects/name-of-host-project/regions/REGION/subnetworks/SUBNETNAME	
 
 - id: example_vm
