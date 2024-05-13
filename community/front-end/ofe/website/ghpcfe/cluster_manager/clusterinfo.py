@@ -225,7 +225,7 @@ class ClusterInfo:
             subnetwork_name = 'null'
             subnetwork_self_link = self.cluster.subnet.cloud_id
         else:
-            subnetwork_name = self.cluster.subnet.name
+            subnetwork_name = self.cluster.subnet.cloud_id
             region = self.cluster.subnet.cloud_region
             host_project_id = self.cluster.project_id
             subnetwork_self_link = 'null'
