@@ -25,13 +25,13 @@ variable "network_name" {
   default     = "default"
 }
 
-# variable "subnetwork_name" {
-#   description = "Name of the pre-existing VPC subnetwork; defaults to var.network_name if set to null."
-#   type        = string
-#   default     = null
-# }
+variable "subnetwork_name" {
+  description = "Name of the pre-existing VPC subnetwork; defaults to var.network_name if set to null."
+  type        = string
+  default     = null
+}
 
-# variable "region" {
-#   description = "Region in which to search for primary subnetwork"
-#   type        = string
-# }
+variable "region" {
+  description = "Region in which to search for primary subnetwork"
+  type        = string
+}

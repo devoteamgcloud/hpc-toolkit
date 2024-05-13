@@ -29,22 +29,22 @@ output "network_self_link" {
   value       = data.google_compute_network.vpc.self_link
 }
 
-# output "subnetwork" {
-#   description = "Full subnetwork object in the primary region"
-#   value       = data.google_compute_subnetwork.primary_subnetwork
-# }
+output "subnetwork" {
+  description = "Full subnetwork object in the primary region"
+  value       = data.google_compute_subnetwork.primary_subnetwork
+}
 
-# output "subnetwork_name" {
-#   description = "Name of the subnetwork in the primary region"
-#   value       = data.google_compute_subnetwork.primary_subnetwork.name
-# }
+output "subnetwork_name" {
+  description = "Name of the subnetwork in the primary region"
+  value       = data.google_compute_subnetwork.primary_subnetwork.name
+}
 
-# output "subnetwork_self_link" {
-#   description = "Subnetwork self-link in the primary region"
-#   value       = data.google_compute_subnetwork.primary_subnetwork.self_link
-# }
+output "subnetwork_self_link" {
+  description = "Subnetwork self-link in the primary region"
+  value       = data.google_compute_subnetwork.primary_subnetwork.self_link
+}
 
-# output "subnetwork_address" {
-#   description = "Subnetwork IP range in the primary region"
-#   value       = data.google_compute_subnetwork.primary_subnetwork.ip_cidr_range
-# }
+output "subnetwork_address" {
+  description = "Subnetwork IP range in the primary region"
+  value       = data.google_compute_subnetwork.primary_subnetwork.ip_cidr_range
+}
