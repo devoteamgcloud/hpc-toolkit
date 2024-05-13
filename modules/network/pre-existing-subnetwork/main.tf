@@ -14,24 +14,17 @@
  * limitations under the License.
 */
 
-variable "project_id" {
-  description = "Project in which the HPC deployment will be created"
-  type        = string
+
+data "google_compute_subnetwork" "primary_subnetwork" {
+  name = try(var.subnetwork_name,null)
+  region = try(var.region,null)
+  project = try(var.host_project,null)
+  self_link = try(var.subnetwork_self_link,null)
+
+  lifecycle {
+    postcondition {
+      condition     = self.self_link != null
+      error_message = "The subnetwork: ${var.subnetwork_self_link} could not be found."
+    }
+  }
 }
-
-variable "network_name" {
-  description = "Name of the existing VPC network"
-  type        = string
-  default     = "default"
-}
-
-# variable "subnetwork_name" {
-#   description = "Name of the pre-existing VPC subnetwork; defaults to var.network_name if set to null."
-#   type        = string
-#   default     = null
-# }
-
-# variable "region" {
-#   description = "Region in which to search for primary subnetwork"
-#   type        = string
-# }

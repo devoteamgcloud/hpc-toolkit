@@ -14,24 +14,16 @@
  * limitations under the License.
 */
 
-variable "project_id" {
-  description = "Project in which the HPC deployment will be created"
-  type        = string
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.83"
+    }
+  }
+  provider_meta "google" {
+    module_name = "blueprints/terraform/hpc-toolkit:pre-existing-subnetwork/v1.32.1"
+  }
+
+  required_version = ">= 0.14.0"
 }
-
-variable "network_name" {
-  description = "Name of the existing VPC network"
-  type        = string
-  default     = "default"
-}
-
-# variable "subnetwork_name" {
-#   description = "Name of the pre-existing VPC subnetwork; defaults to var.network_name if set to null."
-#   type        = string
-#   default     = null
-# }
-
-# variable "region" {
-#   description = "Region in which to search for primary subnetwork"
-#   type        = string
-# }

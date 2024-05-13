@@ -27,19 +27,19 @@ data "google_compute_network" "vpc" {
   }
 }
 
-locals {
-  subnetwork_name = var.subnetwork_name != null ? var.subnetwork_name : var.network_name
-}
+# locals {
+#   subnetwork_name = var.subnetwork_name != null ? var.subnetwork_name : var.network_name
+# }
 
-data "google_compute_subnetwork" "primary_subnetwork" {
-  name    = local.subnetwork_name
-  region  = var.region
-  project = var.project_id
+# data "google_compute_subnetwork" "primary_subnetwork" {
+#   name    = local.subnetwork_name
+#   region  = var.region
+#   project = var.project_id
 
-  lifecycle {
-    postcondition {
-      condition     = self.self_link != null
-      error_message = "The subnetwork: ${local.subnetwork_name} could not be found in project: ${var.project_id} and region: ${var.region}."
-    }
-  }
-}
+#   lifecycle {
+#     postcondition {
+#       condition     = self.self_link != null
+#       error_message = "The subnetwork: ${local.subnetwork_name} could not be found in project: ${var.project_id} and region: ${var.region}."
+#     }
+#   }
+# }

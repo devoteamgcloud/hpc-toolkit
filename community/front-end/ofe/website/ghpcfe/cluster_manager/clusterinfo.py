@@ -214,33 +214,34 @@ class ClusterInfo:
 
         return ("\n\n".join(yaml), refs)
 
-    def _prepare_network(self):
+    def _prepare_subnetwork(self):
         yaml = []
         refs = []
-        if self.cluster.subnet.vpc.cloud_id.startswith("https://www.googleapis.com/compute/v1/projects"):
+        if self.cluster.subnet.cloud_id.startswith("https://www.googleapis.com/compute/v1/projects"):
             split_helper = self.cluster.subnet.vpc.cloud_id.split("/")
             host_project_id = split_helper[len(split_helper)-4]
-            network_name = split_helper[len(split_helper)-1]
-            yaml.append(
-                f"""
-- group: primary
-  modules:
-  - source: community/modules/network/pre-existing-shared-vpc
-    kind: terraform
-    settings:
-      subnetwork_self_link: {self.cluster.subnet.cloud_id}
-    id: hpc_network
-""")
+            network_name = split_helper[len(split_helper)-1]                       
+            region = None
+            subnetwork_name = None
+            subnetwork_self_link = self.cluster.subnet.cloud_id
         else:
-            yaml.append(
+            subnetwork_name = self.cluster.subnet.name
+            region = self.cluster.subnet.cloud_region
+            host_project_id = self.cluster.project_id
+            subnetwork_self_link = None
+
+        yaml.append(
                 f"""
 - group: primary
   modules:
-  - source: modules/network/pre-existing-vpc
+  - source: modules/network/pre-existing-subnetwork
     kind: terraform
     settings:
-       network_name: {self.cluster.subnet.vpc.cloud_id}
-       subnetwork_name: {self.cluster.subnet.cloud_id}
+       subnetwork_name: {subnetwork_name}
+       region: {region}
+       host_project: {host_project_id}
+       self_link: {subnetwork_self_link}
+
     id: hpc_network
 """
             )
@@ -335,7 +336,7 @@ class ClusterInfo:
             (
                 network_yaml,
                 network_references,
-            ) = self._prepare_network()
+            ) = self._prepare_subnetwork()
             (
                 filesystems_yaml,
                 filesystems_references,
