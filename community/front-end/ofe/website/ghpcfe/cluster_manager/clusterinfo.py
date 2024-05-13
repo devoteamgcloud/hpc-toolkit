@@ -240,7 +240,7 @@ class ClusterInfo:
        subnetwork_name: {subnetwork_name}
        region: {region}
        host_project: {host_project_id}
-       self_link: {subnetwork_self_link}
+       subnetwork_self_link: {subnetwork_self_link}
 
     id: hpc_network
 """
