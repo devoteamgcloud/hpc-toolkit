@@ -221,14 +221,14 @@ class ClusterInfo:
             split_helper = self.cluster.subnet.vpc.cloud_id.split("/")
             host_project_id = split_helper[len(split_helper)-4]
             network_name = split_helper[len(split_helper)-1]                       
-            region = None
-            subnetwork_name = None
+            region = 'null'
+            subnetwork_name = 'null'
             subnetwork_self_link = self.cluster.subnet.cloud_id
         else:
             subnetwork_name = self.cluster.subnet.name
             region = self.cluster.subnet.cloud_region
             host_project_id = self.cluster.project_id
-            subnetwork_self_link = None
+            subnetwork_self_link = 'null'
 
         yaml.append(
                 f"""
@@ -241,7 +241,6 @@ class ClusterInfo:
        region: {region}
        host_project: {host_project_id}
        subnetwork_self_link: {subnetwork_self_link}
-
     id: hpc_network
 """
             )
