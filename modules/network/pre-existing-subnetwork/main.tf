@@ -24,7 +24,7 @@ data "google_compute_subnetwork" "primary_subnetwork" {
   lifecycle {
     postcondition {
       condition     = self.self_link != null
-      error_message = "The subnetwork: ${var.subnetwork_self_link} could not be found."
+      error_message = "The subnetwork: ${self.self_link} could not be found."
     }
   }
 }
